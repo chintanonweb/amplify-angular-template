@@ -1,7 +1,14 @@
-<h1>ng-amplify</h1>
-<amplify-authenticator>
-    <ng-template amplifySlot="authenticated" let-user="user" let-signOut="signOut">
-        <app-todos></app-todos>
-        <button (click)="signOut()">Sign Out</button>
-    </ng-template>
-</amplify-authenticator>
+<div class="min-vh-100">
+    <!-- <amplify-authenticator>
+        <ng-template amplifySlot="authenticated" let-user="user" let-signOut="signOut">
+            <nav class="navbar sticky-top bg-body-tertiary shadow-sm">
+                <div class="container-fluid">
+                    <a class="navbar-brand fw-bold" href="#">ng-Amplify-Jira</a>
+                    <button (click)="signOut()" class="btn btn-secondary">Sign Out</button>
+                </div>
+            </nav>
+        <router-outlet></router-outlet>
+        </ng-template>
+    </amplify-authenticator> -->
+    <router-outlet></router-outlet>
+</div>
