@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../../amplify/data/resource';
@@ -39,22 +39,28 @@ export class TicketManagementComponent {
 
   constructor(private ticketService: TicketService) {}
   ngOnInit(): void {
-    // this.listTickets();
+    // this.loadTicket();
     this.loadTickets();
   }
 
   loadTickets(): void {
     const allTickets = this.ticketService.getTickets();
-    this.statuses.forEach(status => {
-      this.tickets[status] = allTickets.filter(ticket => ticket.status === status);
+    this.statuses.forEach((status) => {
+      this.tickets[status] = allTickets.filter(
+        (ticket) => ticket.status === status
+      );
     });
   }
 
   saveTicket(): void {
     if (this.isEditMode && this.ticketData.id !== undefined) {
+      console.log(this.ticketData);
       this.ticketService.updateTicket(this.ticketData.id, this.ticketData);
+      // this.updateTickets();
     } else {
+      console.log(this.ticketData);
       this.ticketService.addTicket(this.ticketData as Omit<Ticket, 'id'>);
+      // this.createTickets();
     }
     this.resetForm();
     this.loadTickets();
@@ -65,7 +71,7 @@ export class TicketManagementComponent {
     this.isEditMode = true;
   }
 
-  deleteTicket(id: number): void {
+  deleteTicket(id: any): void {
     this.ticketService.deleteTicket(id);
     this.loadTickets();
   }
@@ -75,10 +81,10 @@ export class TicketManagementComponent {
     this.isEditMode = false;
   }
 
-  // listTickets() {
+  // loadTicket() {
   //   try {
   //     this.loading = true;
-  //     client.models.Todo.observeQuery().subscribe({
+  //     client.models.Ticket.observeQuery().subscribe({
   //       next: ({ items, isSynced }) => {
   //         this.tickets = items;
   //         this.loading = false;
@@ -91,26 +97,32 @@ export class TicketManagementComponent {
   //   }
   // }
 
-  // createTicket() {
+  // createTickets() {
   //   try {
-  //     client.models.Todo.create({
-  //       content: window.prompt('Todo content'),
-  //       type: (this.tickets.length + 1).toString(),
-  //     });
+  //     client.models.Ticket.create(this.ticketData);
   //     this.listTickets();
   //   } catch (error) {
-  //     console.error('error creating todos', error);
+  //     console.error('error creating ticket', error);
   //   }
   // }
 
-  // deleteTodo(id: string) {
+  // updateTickets() {
   //   try {
-  //     client.models.Todo.delete({
+  //     client.models.Ticket.update(this.ticketData);
+  //     this.listTickets();
+  //   } catch (error) {
+  //     console.error('error updating ticket', error);
+  //   }
+  // }
+
+  // deleteTickets(id: string) {
+  //   try {
+  //     client.models.Ticket.delete({
   //       id: id,
   //     });
   //     this.listTickets();
   //   } catch (error) {
-  //     console.error('error creating todos', error);
+  //     console.error('error creating ticket', error);
   //   }
   // }
 }
