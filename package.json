@@ -20,7 +20,7 @@
     "@angular/router": "^17.3.0",
     "@aws-amplify/ui-angular": "^5.0.16",
     "@popperjs/core": "^2.11.8",
-    "aws-amplify": "^6.2.0",
+    "aws-amplify": "^6.3.4",
     "bootstrap": "^5.3.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
