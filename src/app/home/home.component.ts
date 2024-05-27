@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.listTodos();
-    this.listTickets();
+    // this.listTickets();
   }
 
   listTodos() {
