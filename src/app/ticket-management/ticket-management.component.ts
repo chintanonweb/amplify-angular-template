@@ -5,13 +5,14 @@ import type { Schema } from '../../../amplify/data/resource';
 import { Ticket } from '../models/ticket.model';
 import { TicketService } from '../services/ticket.service';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 const client = generateClient<Schema>();
 
 @Component({
   selector: 'app-ticket-management',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './ticket-management.component.html',
   styleUrl: './ticket-management.component.css',
 })

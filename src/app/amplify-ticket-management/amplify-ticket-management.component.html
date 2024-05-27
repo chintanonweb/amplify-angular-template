@@ -1,0 +1,211 @@
+<amplify-authenticator>
+    <ng-template amplifySlot="authenticated" let-user="user" let-signOut="signOut">
+        <nav class="navbar sticky-top bg-body-tertiary shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold" href="#">ng-Amplify-Jira</a>
+                <button (click)="signOut()" class="btn btn-secondary">Sign Out</button>
+            </div>
+        </nav>
+        <div class="container-fluid h-100 mx-0">
+            <div class="row h-100">
+                <div class="col-md-3">
+                    <div class="card shadow border-0 mt-2">
+                        <div class="card-body">
+                            <form (ngSubmit)="saveTicket()" #ticketForm="ngForm">
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">Title</label>
+                                    <input [(ngModel)]="ticketData.title" name="title" class="form-control" id="title"
+                                        required #title="ngModel">
+                                    <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-danger">
+                                        <div *ngIf="title.errors?.['required']">Title is required.</div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea [(ngModel)]="ticketData.description" name="description"
+                                        class="form-control" id="description" required
+                                        #description="ngModel"></textarea>
+                                    <div *ngIf="description.invalid && (description.dirty || description.touched)"
+                                        class="text-danger">
+                                        <div *ngIf="description.errors?.['required']">Description is required.</div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="assignee" class="form-label">Assignee</label>
+                                    <input [(ngModel)]="ticketData.assignee" name="assignee" class="form-control"
+                                        id="assignee" required #assignee="ngModel">
+                                    <div *ngIf="assignee.invalid && (assignee.dirty || assignee.touched)"
+                                        class="text-danger">
+                                        <div *ngIf="assignee.errors?.['required']">Assignee is required.</div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="priority" class="form-label">Priority</label>
+                                    <select [(ngModel)]="ticketData.priority" name="priority" class="form-select"
+                                        id="priority" required #priority="ngModel">
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                    <div *ngIf="priority.invalid && (priority.dirty || priority.touched)"
+                                        class="text-danger">
+                                        <div *ngIf="priority.errors?.['required']">Priority is required.</div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select [(ngModel)]="ticketData.status" name="status" class="form-select"
+                                        id="status" required #status="ngModel">
+                                        <option value="backlog">Backlog</option>
+                                        <option value="ready">Ready for Development</option>
+                                        <option value="inprogress">In Progress</option>
+                                        <option value="block">Block</option>
+                                        <option value="test">Test</option>
+                                        <option value="done">Done</option>
+                                    </select>
+                                    <div *ngIf="status.invalid && (status.dirty || status.touched)" class="text-danger">
+                                        <div *ngIf="status.errors?.['required']">Status is required.</div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary"
+                                    [disabled]="ticketForm.invalid">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row flex-nowrap overflow-auto h-100">
+                        @for (status of statuses; track $index) {
+                        <div class="col">
+                            <div class="bg-light h-100 p-2" style="min-width: 15rem;">
+                                <p class="text-secondary mb-2">{{ status | uppercase }}</p>
+                                @for (ticket of tickets[status]; track $index) {
+                                <div class="card mb-2 shadow-sm border-0 rounded-0">
+                                    <div class="card-body">
+                                        <h6 class="card-title">{{ ticket.title }}</h6>
+                                        <p class="card-text mb-1">
+                                            <i class="fa-solid fa-circle-info text-secondary" title="Description"></i>
+                                            {{ ticket.description}}
+                                        </p>
+                                        <p class="mb-2" [ngClass]="{
+                                    'text-danger': ticket.priority === 'high',
+                                    'text-warning': ticket.priority === 'medium',
+                                    'text-success': ticket.priority === 'low'
+                                  }">
+                                            <i class="fa-solid fa-triangle-exclamation" title="Priority"></i>
+                                            <!-- <i class="fa-solid fa-arrow-up-wide-short me-1" ></i> -->
+                                            {{ ticket.priority | titlecase }}
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">
+                                                <i class="fa-solid fa-user-tag" title="Assignee"></i>
+                                                {{ ticket.assignee | titlecase }}
+                                            </p>
+                                            <div>
+                                                <button class="btn btn-outline-primary btn-sm me-2"
+                                                    (click)="editTicket(ticket)" data-bs-toggle="modal"
+                                                    data-bs-target="#ticketModal">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm"
+                                                    (click)="deleteTicket(ticket.id)">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="ticketModal" tabindex="-1" aria-labelledby="ticketModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ticketModalLabel">{{ isEditMode ? 'Edit Ticket' : 'Add Ticket' }}
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            (click)="resetForm()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="saveTicket()" #modalTicketForm="ngForm">
+                            <div class="mb-3">
+                                <label for="modal-title" class="form-label">Title</label>
+                                <input [(ngModel)]="ticketData.title" name="title" class="form-control" id="modal-title"
+                                    required #modalTitle="ngModel">
+                                <div *ngIf="modalTitle.invalid && (modalTitle.dirty || modalTitle.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="modalTitle.errors?.['required']">Title is required.</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="modal-description" class="form-label">Description</label>
+                                <textarea [(ngModel)]="ticketData.description" name="description" class="form-control"
+                                    id="modal-description" required #modalDescription="ngModel"></textarea>
+                                <div *ngIf="modalDescription.invalid && (modalDescription.dirty || modalDescription.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="modalDescription.errors?.['required']">Description is required.</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="modal-assignee" class="form-label">Assignee</label>
+                                <input [(ngModel)]="ticketData.assignee" name="assignee" class="form-control"
+                                    id="modal-assignee" required #modalAssignee="ngModel">
+                                <div *ngIf="modalAssignee.invalid && (modalAssignee.dirty || modalAssignee.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="modalAssignee.errors?.['required']">Assignee is required.</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="modal-priority" class="form-label">Priority</label>
+                                <select [(ngModel)]="ticketData.priority" name="priority" class="form-select"
+                                    id="modal-priority" required #modalPriority="ngModel">
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                                <div *ngIf="modalPriority.invalid && (modalPriority.dirty || modalPriority.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="modalPriority.errors?.['required']">Priority is required.</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="modal-status" class="form-label">Status</label>
+                                <select [(ngModel)]="ticketData.status" name="status" class="form-select"
+                                    id="modal-status" required #modalStatus="ngModel">
+                                    <option value="backlog">Backlog</option>
+                                    <option value="ready">Ready for Development</option>
+                                    <option value="inprogress">In Progress</option>
+                                    <option value="block">Block</option>
+                                    <option value="test">Test</option>
+                                    <option value="done">Done</option>
+                                </select>
+                                <div *ngIf="modalStatus.invalid && (modalStatus.dirty || modalStatus.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="modalStatus.errors?.['required']">Status is required.</div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" [disabled]="modalTicketForm.invalid"
+                                data-bs-dismiss="modal">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</amplify-authenticator>

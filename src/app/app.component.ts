@@ -16,7 +16,7 @@ Amplify.configure(outputs);
 export class AppComponent {
   title = 'ng-amplify-jira';
     
-  // constructor(public authenticator: AuthenticatorService) {
-  //   Amplify.configure(outputs);
-  // }
+  constructor(public authenticator: AuthenticatorService) {
+    Amplify.configure(outputs);
+  }
 }
