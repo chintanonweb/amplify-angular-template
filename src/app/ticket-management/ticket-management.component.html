@@ -109,8 +109,8 @@
 <!-- src/app/ticket-list/ticket-list.component.html -->
 <nav class="navbar sticky-top bg-body-tertiary shadow-sm">
     <div class="container-fluid mx-0">
-        <a class="navbar-brand fw-bold" routerLink="/">Jira</a>
-        <button class="btn btn-secondary" routerLink="/">Home</button>
+        <a class="navbar-brand fw-bold" href="#">ng-Amplify-Jira</a>
+        <button class="btn btn-secondary">Sign Out</button>
     </div>
 </nav>
 <div class="container-fluid h-100 mx-0">
@@ -118,51 +118,36 @@
         <div class="col-md-3">
             <div class="card shadow border-0 mt-2">
                 <div class="card-body">
-                    <form (ngSubmit)="saveTicket()" #ticketForm="ngForm">
+                    <form (ngSubmit)="saveTicket()">
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
-                            <input [(ngModel)]="ticketData.title" name="title" class="form-control" id="title" required
-                                #title="ngModel">
-                            <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-danger">
-                                <div *ngIf="title.errors?.['required']">Title is required.</div>
-                            </div>
+                            <input [(ngModel)]="ticketData.title" name="title" class="form-control" id="title" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="description" class="form-label">Description</label>
                             <textarea [(ngModel)]="ticketData.description" name="description" class="form-control"
-                                id="description" required #description="ngModel"></textarea>
-                            <div *ngIf="description.invalid && (description.dirty || description.touched)" class="text-danger">
-                                <div *ngIf="description.errors?.['required']">Description is required.</div>
-                            </div>
+                                id="description"></textarea>
                         </div>
 
                         <div class="mb-3">
                             <label for="assignee" class="form-label">Assignee</label>
-                            <input [(ngModel)]="ticketData.assignee" name="assignee" class="form-control" id="assignee" required
-                                #assignee="ngModel">
-                            <div *ngIf="assignee.invalid && (assignee.dirty || assignee.touched)" class="text-danger">
-                                <div *ngIf="assignee.errors?.['required']">Assignee is required.</div>
-                            </div>
+                            <input [(ngModel)]="ticketData.assignee" name="assignee" class="form-control" id="assignee"
+                                required>
                         </div>
 
                         <div class="mb-3">
                             <label for="priority" class="form-label">Priority</label>
-                            <select [(ngModel)]="ticketData.priority" name="priority" class="form-select" id="priority" required
-                                #priority="ngModel">
+                            <select [(ngModel)]="ticketData.priority" name="priority" class="form-select" id="priority">
                                 <option value="low">Low</option>
                                 <option value="medium">Medium</option>
                                 <option value="high">High</option>
                             </select>
-                            <div *ngIf="priority.invalid && (priority.dirty || priority.touched)" class="text-danger">
-                                <div *ngIf="priority.errors?.['required']">Priority is required.</div>
-                            </div>
                         </div>
 
                         <div class="mb-3">
                             <label for="status" class="form-label">Status</label>
-                            <select [(ngModel)]="ticketData.status" name="status" class="form-select" id="status" required
-                                #status="ngModel">
+                            <select [(ngModel)]="ticketData.status" name="status" class="form-select" id="status">
                                 <option value="backlog">Backlog</option>
                                 <option value="ready">Ready for Development</option>
                                 <option value="inprogress">In Progress</option>
@@ -170,12 +155,9 @@
                                 <option value="test">Test</option>
                                 <option value="done">Done</option>
                             </select>
-                            <div *ngIf="status.invalid && (status.dirty || status.touched)" class="text-danger">
-                                <div *ngIf="status.errors?.['required']">Status is required.</div>
-                            </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary" [disabled]="ticketForm.invalid">Save</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </form>
                 </div>
             </div>
@@ -237,51 +219,38 @@
                     (click)="resetForm()"></button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="saveTicket()" #modalTicketForm="ngForm">
+                <form (ngSubmit)="saveTicket()">
                     <div class="mb-3">
                         <label for="modal-title" class="form-label">Title</label>
-                        <input [(ngModel)]="ticketData.title" name="title" class="form-control" id="modal-title" required
-                            #modalTitle="ngModel">
-                        <div *ngIf="modalTitle.invalid && (modalTitle.dirty || modalTitle.touched)" class="text-danger">
-                            <div *ngIf="modalTitle.errors?.['required']">Title is required.</div>
-                        </div>
+                        <input [(ngModel)]="ticketData.title" name="title" class="form-control" id="modal-title"
+                            required>
                     </div>
 
                     <div class="mb-3">
                         <label for="modal-description" class="form-label">Description</label>
                         <textarea [(ngModel)]="ticketData.description" name="description" class="form-control"
-                            id="modal-description" required #modalDescription="ngModel"></textarea>
-                        <div *ngIf="modalDescription.invalid && (modalDescription.dirty || modalDescription.touched)" class="text-danger">
-                            <div *ngIf="modalDescription.errors?.['required']">Description is required.</div>
-                        </div>
+                            id="modal-description"></textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="modal-assignee" class="form-label">Assignee</label>
                         <input [(ngModel)]="ticketData.assignee" name="assignee" class="form-control"
-                            id="modal-assignee" required #modalAssignee="ngModel">
-                        <div *ngIf="modalAssignee.invalid && (modalAssignee.dirty || modalAssignee.touched)" class="text-danger">
-                            <div *ngIf="modalAssignee.errors?.['required']">Assignee is required.</div>
-                        </div>
+                            id="modal-assignee" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="modal-priority" class="form-label">Priority</label>
                         <select [(ngModel)]="ticketData.priority" name="priority" class="form-select"
-                            id="modal-priority" required #modalPriority="ngModel">
+                            id="modal-priority">
                             <option value="low">Low</option>
                             <option value="medium">Medium</option>
                             <option value="high">High</option>
                         </select>
-                        <div *ngIf="modalPriority.invalid && (modalPriority.dirty || modalPriority.touched)" class="text-danger">
-                            <div *ngIf="modalPriority.errors?.['required']">Priority is required.</div>
-                        </div>
                     </div>
 
                     <div class="mb-3">
                         <label for="modal-status" class="form-label">Status</label>
-                        <select [(ngModel)]="ticketData.status" name="status" class="form-select" id="modal-status" required
-                            #modalStatus="ngModel">
+                        <select [(ngModel)]="ticketData.status" name="status" class="form-select" id="modal-status">
                             <option value="backlog">Backlog</option>
                             <option value="ready">Ready for Development</option>
                             <option value="inprogress">In Progress</option>
@@ -289,12 +258,9 @@
                             <option value="test">Test</option>
                             <option value="done">Done</option>
                         </select>
-                        <div *ngIf="modalStatus.invalid && (modalStatus.dirty || modalStatus.touched)" class="text-danger">
-                            <div *ngIf="modalStatus.errors?.['required']">Status is required.</div>
-                        </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" [disabled]="modalTicketForm.invalid" data-bs-dismiss="modal">Save</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
                 </form>
             </div>
         </div>
