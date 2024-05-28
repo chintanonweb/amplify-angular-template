@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   tickets: any[] = [];
 
   ngOnInit(): void {
-    this.listTodos();
+    // this.listTodos();
     // this.listTickets();
   }
 
